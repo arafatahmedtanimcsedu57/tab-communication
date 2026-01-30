@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Multi-Window Tutorial</title>
+    <style>
+        /* Remove default margins and padding */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevent scrollbars */
+        }
+
+        /* Make the canvas fill the entire screen */
+        #scene {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!--
+        We load Three.js from CDN
+        r124 is the version used in the original project
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js"></script>
+
+    <!-- Our main JavaScript file (loaded as ES module) -->
+    <script type="module" src="main.js"></script>
+</body>
+</html>
