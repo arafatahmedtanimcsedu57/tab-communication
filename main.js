@@ -8,10 +8,14 @@
  * - Camera: Defines what we see (our viewpoint into the 3D world)
  * - Renderer: Draws/renders the scene to the screen using WebGL
  *
- * Think of it like a movie set:
- * - Scene = The stage/set
- * - Camera = The camera filming the set
- * - Renderer = The screen showing the footage
+ * ============================================
+ * STEP 2: Adding 3D Objects & Animation Loop
+ * ============================================
+ *
+ * In this step, we:
+ * - Create a 3D cube with geometry and material
+ * - Set up a continuous animation loop using requestAnimationFrame
+ * - Rotate the cube to see it in action
  */
 
 class App {
@@ -19,6 +23,7 @@ class App {
         this.camera = null;   // Our viewpoint into the 3D world
         this.scene = null;    // Container for all 3D objects
         this.renderer = null; // Draws everything to the screen
+        this.cube = null;     // Our 3D cube object
 
         this.init();
     }
@@ -29,6 +34,8 @@ class App {
      */
     init() {
         this.setupScene();
+        this.createObjects();
+        this.animate();
     }
 
     /**
@@ -94,15 +101,65 @@ class App {
         // Add the renderer's canvas element to the page
         document.body.appendChild(this.renderer.domElement);
 
-        // --------------------------------------------
-        // 4. RENDER THE SCENE (just once for now)
-        // --------------------------------------------
-        // This draws the scene to the screen
-        // Currently it's just a black screen since we haven't added any objects
-        this.renderer.render(this.scene, this.camera);
-
         console.log("Step 1 Complete: Basic Three.js setup done!");
-        console.log("You should see a black screen - that's our empty scene.");
+    }
+
+    /**
+     * Create 3D objects and add them to the scene
+     */
+    createObjects() {
+        // --------------------------------------------
+        // CREATE A CUBE
+        // --------------------------------------------
+        // A 3D object in Three.js is called a "Mesh"
+        // It consists of two parts:
+        // 1. Geometry: The shape (vertices, faces)
+        // 2. Material: The appearance (color, texture, how light affects it)
+
+        // Create the geometry - a box with width, height, depth of 100 units
+        const geometry = new THREE.BoxGeometry(100, 100, 100);
+
+        // Create the material - a basic material with a color
+        // MeshBasicMaterial doesn't need lights to be visible
+        const material = new THREE.MeshBasicMaterial({
+            color: 0x00ff00,    // Green color
+            wireframe: true     // Show as wireframe so we can see it rotate
+        });
+
+        // Combine geometry and material into a mesh
+        this.cube = new THREE.Mesh(geometry, material);
+
+        // Position the cube in the center of the screen
+        this.cube.position.set(
+            window.innerWidth / 2,
+            window.innerHeight / 2,
+            0
+        );
+
+        // Add the cube to the scene
+        this.scene.add(this.cube);
+
+        console.log("Step 2: Cube created and added to scene!");
+    }
+
+    /**
+     * Animation loop - runs continuously at ~60fps
+     */
+    animate() {
+        // --------------------------------------------
+        // THE ANIMATION LOOP
+        // --------------------------------------------
+        // requestAnimationFrame tells the browser to call our function
+        // before the next repaint (typically 60 times per second)
+        // We use an arrow function to preserve 'this' context
+        requestAnimationFrame(() => this.animate());
+
+        // Rotate the cube a little bit each frame
+        this.cube.rotation.x += 0.01;
+        this.cube.rotation.y += 0.01;
+
+        // Render the scene with the camera
+        this.renderer.render(this.scene, this.camera);
     }
 }
 
